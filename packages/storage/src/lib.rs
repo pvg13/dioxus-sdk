@@ -7,6 +7,7 @@
 //! use dioxus_storage::use_persistent;
 //! use dioxus::prelude::*;
 //!
+//!
 //! #[component]
 //! fn App() -> Element {
 //!     let mut num = use_persistent("count", || 0);
@@ -30,6 +31,7 @@ mod client_storage;
 mod persistence;
 
 pub use client_storage::{LocalStorage, SessionStorage};
+use dioxus::core::{ReactiveContext, current_scope_id, generation, needs_update};
 use dioxus::logger::tracing::trace;
 use futures_util::stream::StreamExt;
 pub use persistence::{
@@ -46,6 +48,7 @@ use std::ops::{Deref, DerefMut};
 use std::sync::Arc;
 use tokio::sync::watch::error::SendError;
 use tokio::sync::watch::{Receiver, Sender};
+pub use dioxus_signals::WritableExt;
 
 #[cfg(not(target_family = "wasm"))]
 pub use client_storage::{set_dir_name, set_directory};
@@ -403,7 +406,7 @@ where
             key,
             data: Signal::new_in_scope(
                 data,
-                current_scope_id().expect("must be called from inside of the dioxus context"),
+                current_scope_id(),
             ),
         }
     }

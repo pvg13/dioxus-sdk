@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-dioxus = { workspace = true, features = ["router"] }
+dioxus = { version = "0.7.0", features = ["router"] }
 dioxus_storage = { workspace = true }
 
 [features]
